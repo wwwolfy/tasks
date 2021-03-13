@@ -1,15 +1,16 @@
 import React from 'react';
+import {Container} from '@material-ui/core';
 
 const AppLayoutView = props => {
     return (
-        <div className="container">
+        <Container component="div" maxWidth="lg">
             <header>
                 <h1>Tasks App</h1>
             </header>
             <main>
                 {props.children}
             </main>
-        </div>
+        </Container>
     )
 };
 
