@@ -1,12 +1,11 @@
 import React from 'react';
 import {Container} from '@material-ui/core';
+import Header from './view-elements/Header';
 
 const AppLayoutView = props => {
     return (
         <Container component="div" maxWidth="lg">
-            <header>
-                <h1>Tasks App</h1>
-            </header>
+            <Header />
             <main>
                 {props.children}
             </main>
