@@ -1,30 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from '@material-ui/core/styles';
-import {createBrowserHistory} from 'history';
-import {Provider} from 'react-redux';
-import configureStore from './store';
-import rootSaga from './saga';
-
 import theme from './ui-components/theme/theme';
 import './index.css';
 import App from './application/App';
 import reportWebVitals from './reportWebVitals';
 
 
-const history = createBrowserHistory();
-
-// initialize store
-const store = configureStore({}, history);
-store.runSaga(rootSaga);
-
 ReactDOM.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <ThemeProvider theme={theme}>
-                <App />
-            </ThemeProvider>
-        </Provider>
+        <ThemeProvider theme={theme}>
+            <App />
+        </ThemeProvider>
     </React.StrictMode>,
   document.getElementById('root')
 );

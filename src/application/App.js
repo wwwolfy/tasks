@@ -6,14 +6,19 @@ import {
 } from 'react-router-dom';
 import TasksView from '../tasks/TasksView';
 import PageNotFoundView from '../application/PageNotFoundView';
+import routePaths from '../routePaths';
+import CreateGroupView from '../tasks/CreateGroupView';
 import './App.css';
 
 function App() {
     return (
         <Router>
             <Switch>
-                <Route path='/' exact>
+                <Route path={routePaths.TASKS} exact>
                     <TasksView />
+                </Route>
+                <Route path={routePaths.CREATE_GROUP} exact>
+                    <CreateGroupView />
                 </Route>
                 <Route path='*'>
                     <PageNotFoundView />

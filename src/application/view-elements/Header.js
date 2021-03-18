@@ -73,6 +73,17 @@ const Header = () => {
                     >
                         Create New Task
                     </Link>
+                    <Link
+                        component={CustomLink}
+                        to={routePaths.CREATE_GROUP}
+                        variant="body1"
+                        color="secondary"
+                        underline="none"
+                        className={styles.link}
+                        activeClassName={styles.activeLink}
+                    >
+                        Create New Group
+                    </Link>
                 </Typography>
             </Grid>
         </AppBar>
