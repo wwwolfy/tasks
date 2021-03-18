@@ -59,6 +59,16 @@ const Header = () => {
                         underline="none"
                         className={styles.link}
                         activeClassName={styles.activeLink}
+                        isActive={(match, location) => {
+                            if (match && match.isExact) return true;
+
+                            // return !!matchPath(location.pathname, {
+                            //     path: [
+                            //         routePaths.MY_LAST_VIEWED_QUESTIONS,
+                            //         routePaths.MY_ANSWERED_QUESTIONS,
+                            //     ],
+                            // });
+                        }}
                     >
                         Tasks
                     </Link>
