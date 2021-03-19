@@ -8,7 +8,6 @@ import TasksView from '../tasks/TasksView';
 import PageNotFoundView from '../application/PageNotFoundView';
 import routePaths from '../routePaths';
 import CreateGroupView from '../tasks/CreateGroupView';
-import CreateTaskView from '../tasks/CreateTaskView';
 import TaskView from '../tasks/TaskView';
 import './App.css';
 
@@ -20,10 +19,10 @@ function App() {
                     <TasksView />
                 </Route>
                 <Route path={routePaths.TASK} exact>
-                    <CreateTaskView />
+                    <TaskView />
                 </Route>
                 <Route path={routePaths.CREATE_TASK} exact>
-                    <CreateTaskView />
+                    <TaskView />
                 </Route>
                 <Route path={routePaths.CREATE_GROUP} exact>
                     <CreateGroupView />

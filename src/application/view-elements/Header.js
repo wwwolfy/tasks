@@ -1,4 +1,5 @@
 import React from 'react';
+import { matchPath } from "react-router";
 import {Grid, AppBar, Typography, makeStyles, Link} from '@material-ui/core';
 import CustomLink from '../../ui-components/CustomLink';
 import routePaths from '../../routePaths';
@@ -62,12 +63,11 @@ const Header = () => {
                         isActive={(match, location) => {
                             if (match && match.isExact) return true;
 
-                            // return !!matchPath(location.pathname, {
-                            //     path: [
-                            //         routePaths.MY_LAST_VIEWED_QUESTIONS,
-                            //         routePaths.MY_ANSWERED_QUESTIONS,
-                            //     ],
-                            // });
+                            return !!matchPath(location.pathname, {
+                                path: [
+                                    routePaths.TASK,
+                                ],
+                            });
                         }}
                     >
                         Tasks
