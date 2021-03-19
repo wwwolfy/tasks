@@ -9,6 +9,7 @@ import PageNotFoundView from '../application/PageNotFoundView';
 import routePaths from '../routePaths';
 import CreateGroupView from '../tasks/CreateGroupView';
 import CreateTaskView from '../tasks/CreateTaskView';
+import TaskView from '../tasks/TaskView';
 import './App.css';
 
 function App() {
@@ -17,6 +18,9 @@ function App() {
             <Switch>
                 <Route path={routePaths.TASKS} exact>
                     <TasksView />
+                </Route>
+                <Route path={routePaths.TASK} exact>
+                    <TaskView />
                 </Route>
                 <Route path={routePaths.CREATE_TASK} exact>
                     <CreateTaskView />

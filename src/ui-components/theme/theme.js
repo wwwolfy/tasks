@@ -34,6 +34,12 @@ const theme = createMuiTheme({
         yellow: {
             ...yellow,
         },
+        statuses: {
+            red: 'red',
+            grey: grey[800],
+            blue: blue[500],
+            green: 'green',
+        }
     },
     typography: typographyConfig,
     shadows: [

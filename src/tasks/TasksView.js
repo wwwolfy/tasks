@@ -1,11 +1,69 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState, Fragment} from 'react';
+import {useHistory} from "react-router-dom";
+import {Grid, Typography, Box} from '@material-ui/core';
 import AppLayoutView from '../application/AppLayoutView';
+import CustomRow from '../ui-components/CustomRow';
+import TaskRow from './view-elements/TaskRow';
+import {getTasks, deleteTask} from './apis/tasksApi';
 
 const TasksView = () => {
+    const history = useHistory();
+    const [tasks, setTasks] = useState(null);
+
+    useEffect(() => {
+        getTasks()
+            .then(response => setTasks(response))
+            .catch(error => console.error(error));
+    }, []);
+
+    const onDelete = id => {
+        deleteTask(id)
+            .then(() => {
+                const newTasks = tasks.filter(task => {
+                    return task.id !== id;
+                });
+                setTasks(newTasks);
+            })
+            .catch(error => console.error(error));
+    }
+
+    const onUpdate = id => {
+        history.push(`/task/${id}`);
+    };
 
     return (
         <AppLayoutView>
-            <h1>Tasks View</h1>
+            <h1>Tasks</h1>
+            {tasks ? (
+                <Fragment>
+                    <CustomRow>
+                        <Grid item xs={2}>
+                            <Typography variant="h4" color="primary">Status</Typography>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Typography variant="h4" color="primary">Title</Typography>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Typography variant="h4" color="primary">Group</Typography>
+                        </Grid>
+                    </CustomRow>
+                    {tasks.length ? tasks.map(task => {
+                        return (
+                            <CustomRow key={task.id}>
+                                <TaskRow task={task} on onDelete={onDelete} onUpdate={onUpdate}/>
+                            </CustomRow>
+                        );
+                    }) : (
+                        <Box component="div" mt={8}>
+                            <Typography component="h1" color="primary" variant="h1" align="center">There are no tasks</Typography>
+                        </Box>
+                    )}
+                </Fragment>
+            ) : (
+                <Box component="div" my={20}>
+                    <Typography component="h1" color="primary" variant="h1" align="center">Loading...</Typography>
+                </Box>
+            )}
         </AppLayoutView>
     )
 };

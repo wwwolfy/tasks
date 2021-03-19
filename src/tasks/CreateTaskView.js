@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {withRouter} from 'react-router';
+import {useHistory} from "react-router-dom";
 import {Button, Grid, Typography, TextField, FormControl, InputLabel, Select, MenuItem, makeStyles} from '@material-ui/core';
 import AppLayoutView from '../application/AppLayoutView';
 import {getGroups, createTask} from './apis/tasksApi';
@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const CreateTaskView = ({history}) => {
+const CreateTaskView = () => {
+    const history = useHistory();
     const styles = useStyles();
     const [taskTitle, setTaskTitle] = useState('');
     const [taskGroup, setTaskGroup] = useState('');
@@ -115,4 +116,4 @@ const CreateTaskView = ({history}) => {
     )
 };
 
-export default withRouter(CreateTaskView);
+export default CreateTaskView;

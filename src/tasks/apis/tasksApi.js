@@ -45,3 +45,31 @@ export const createTask = params => {
     )
         .then(response => handleResponse(response));
 };
+
+export const getTasks = () => {
+    return fetch(
+        `${config.API_URL}${config.ENDPOINTS.TASKS}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            method: 'GET',
+        },
+    )
+        .then(response => handleResponse(response));
+};
+
+export const deleteTask = id => {
+    return fetch(
+        `${config.API_URL}${config.ENDPOINTS.TASKS}/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            method: 'DELETE',
+        },
+    )
+        .then(response => handleResponse(response));
+};

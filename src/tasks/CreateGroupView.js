@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {withRouter} from 'react-router';
+import {useHistory} from "react-router-dom";
 import {Button, Grid, Typography, TextField, makeStyles} from '@material-ui/core';
 import AppLayoutView from '../application/AppLayoutView';
 import CustomRow from '../ui-components/CustomRow';
@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const CreateGroupView = ({history}) => {
+const CreateGroupView = () => {
+    const history = useHistory();
     const styles = useStyles();
     const [name, setName] = useState('');
     const saveNewGroup = () => {
@@ -53,4 +54,4 @@ const CreateGroupView = ({history}) => {
     )
 };
 
-export default withRouter(CreateGroupView);
+export default CreateGroupView;
