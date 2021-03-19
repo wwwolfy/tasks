@@ -20,7 +20,7 @@ function App() {
                     <TasksView />
                 </Route>
                 <Route path={routePaths.TASK} exact>
-                    <TaskView />
+                    <CreateTaskView />
                 </Route>
                 <Route path={routePaths.CREATE_TASK} exact>
                     <CreateTaskView />

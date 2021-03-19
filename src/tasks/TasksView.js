@@ -30,7 +30,7 @@ const TasksView = () => {
     }
 
     const onUpdate = id => {
-        history.push(`/task/${id}`);
+        history.push(`/task/${id}`, {id});
     };
 
     const tasksChartData = tasks && tasks.reduce((acc, curr) => {

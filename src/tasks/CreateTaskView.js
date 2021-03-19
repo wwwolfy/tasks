@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import {Button, Grid, Typography, TextField, FormControl, InputLabel, Select, MenuItem, makeStyles} from '@material-ui/core';
 import AppLayoutView from '../application/AppLayoutView';
-import {getGroups, createTask} from './apis/tasksApi';
+import {getGroups, createTask, getTask, updateTask} from './apis/tasksApi';
 import {taskStatuses} from './constants/taskStatuses';
 import CustomRow from '../ui-components/CustomRow';
 import routePaths from '../routePaths';
@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateTaskView = () => {
     const history = useHistory();
+    const {id} = useParams();
     const styles = useStyles();
     const [taskTitle, setTaskTitle] = useState('');
     const [taskGroup, setTaskGroup] = useState('');
@@ -31,7 +32,15 @@ const CreateTaskView = () => {
         getGroups()
             .then(response => setGroupOptions(response))
             .catch(error => console.error(error));
-    }, []);
+
+        getTask(id)
+            .then(response => {
+                setTaskGroup(response.group);
+                setTaskTitle(response.title);
+                setTaskStatus(response.status)
+            })
+            .catch(error => console.error(error))
+    }, [id]);
 
     const saveNewTask = () => {
         createTask({
@@ -40,6 +49,16 @@ const CreateTaskView = () => {
             status: taskStatus,
         })
             .then(() => history.push(routePaths.TASKS))
+            .catch(error => console.error(error));
+    };
+
+    const onUpdateTask = id => {
+        updateTask({
+            id,
+            title: taskTitle,
+            group: taskGroup,
+            status: taskStatus,
+        }).then(() => history.push(routePaths.TASKS))
             .catch(error => console.error(error));
     }
     return (
@@ -105,10 +124,10 @@ const CreateTaskView = () => {
                     <Button
                         variant="outlined"
                         color="primary"
-                        onClick={saveNewTask}
+                        onClick={() => id ? onUpdateTask(id) : saveNewTask()}
                         className={styles.formControl}
                     >
-                        Save
+                        {id ? 'Update' : 'Save'}
                     </Button>
                 </Grid>
             </CustomRow>

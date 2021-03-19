@@ -73,3 +73,35 @@ export const deleteTask = id => {
     )
         .then(response => handleResponse(response));
 };
+
+export const getTask = id => {
+    return fetch(
+        `${config.API_URL}${config.ENDPOINTS.TASKS}/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            method: 'GET',
+        },
+    )
+        .then(response => handleResponse(response));
+};
+
+export const updateTask = params => {
+    const {id, title, status, group} = params;
+    return fetch(
+        `${config.API_URL}${config.ENDPOINTS.TASKS}/${id}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            method: 'PUT',
+            body: JSON.stringify({title, group, status})
+        },
+    )
+        .then(response => handleResponse(response));
+};
+
+
