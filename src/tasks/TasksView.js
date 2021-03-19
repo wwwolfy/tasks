@@ -4,7 +4,9 @@ import {Grid, Typography, Box} from '@material-ui/core';
 import AppLayoutView from '../application/AppLayoutView';
 import CustomRow from '../ui-components/CustomRow';
 import TaskRow from './view-elements/TaskRow';
+import TasksChart from './view-elements/TasksChart';
 import {getTasks, deleteTask} from './apis/tasksApi';
+import {taskStatuses} from './constants/taskStatuses';
 
 const TasksView = () => {
     const history = useHistory();
@@ -30,6 +32,18 @@ const TasksView = () => {
     const onUpdate = id => {
         history.push(`/task/${id}`);
     };
+
+    const tasksChartData = tasks && tasks.reduce((acc, curr) => {
+        return {
+            ...acc,
+            [taskStatuses[curr.status].text]: acc[taskStatuses[curr.status].text] + 1
+        }
+    }, {
+        [taskStatuses.NEW.text]: 0,
+        [taskStatuses.POSTPONED.text]: 0,
+        [taskStatuses.COMPLETED.text]: 0,
+        [taskStatuses.SCHEDULED.text]: 0,
+    });
 
     return (
         <AppLayoutView>
@@ -64,6 +78,14 @@ const TasksView = () => {
                     <Typography component="h1" color="primary" variant="h1" align="center">Loading...</Typography>
                 </Box>
             )}
+            {
+                tasks && tasks.length > 0 && (
+                    <CustomRow>
+                        <TasksChart tasksData={tasksChartData}/>
+                    </CustomRow>
+                )
+            }
+
         </AppLayoutView>
     )
 };
