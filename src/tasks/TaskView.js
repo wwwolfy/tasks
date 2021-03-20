@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useHistory, useParams} from "react-router-dom";
 import {Button, Grid, Typography, TextField, FormControl, InputLabel, Select, MenuItem, makeStyles, Box} from '@material-ui/core';
 import AppLayoutView from '../application/AppLayoutView';
-import {getGroups, createTask, getTask, updateTask} from './apis/tasksApi';
+import {getGroups, createTask, getTask, updateTask, newTaskSendNotification, completedTaskSendNotifications} from './apis/tasksApi';
 import {taskStatuses} from './constants/taskStatuses';
 import CustomRow from '../ui-components/CustomRow';
 import routePaths from '../routePaths';
@@ -26,6 +26,7 @@ const TaskView = () => {
     const [taskGroup, setTaskGroup] = useState('');
     const [taskStatus, setTaskStatus] = useState('');
     const [groupOptions, setGroupOptions] = useState(null);
+    const [isCompleted, setIsCompleted] = useState(false);
 
 
     useEffect(() => {
@@ -38,32 +39,48 @@ const TaskView = () => {
                 .then(response => {
                     setTaskGroup(response.group);
                     setTaskTitle(response.title);
-                    setTaskStatus(response.status)
+                    setTaskStatus(response.status);
+                    if (response.status === taskStatuses.COMPLETED.type) {
+                        setIsCompleted(true);
+                    }
                 })
                 .catch(error => console.error(error))
         }
 
     }, [id]);
 
-    const saveNewTask = () => {
-        createTask({
-            title: taskTitle,
-            group: taskGroup,
-            status: taskStatus,
-        })
-            .then(() => history.push(routePaths.TASKS))
-            .catch(error => console.error(error));
+    const saveNewTask = async () => {
+        try {
+            await createTask({
+                title: taskTitle,
+                group: taskGroup,
+                status: taskStatuses.NEW.type,
+            });
+            await newTaskSendNotification('New task created');
+        } catch (e) {
+            console.error(e)
+        }
+
+        history.push(routePaths.TASKS);
     };
 
-    const onUpdateTask = id => {
-        updateTask({
-            id,
-            title: taskTitle,
-            group: taskGroup,
-            status: taskStatus,
-        }).then(() => history.push(routePaths.TASKS))
-            .catch(error => console.error(error));
-    }
+    const onUpdateTask = async (id) => {
+        try {
+            const response = await updateTask({
+                id,
+                title: taskTitle,
+                group: taskGroup,
+                status: taskStatus,
+            });
+            if (!isCompleted && response.status === taskStatuses.COMPLETED.type) {
+                await completedTaskSendNotifications(`Task ${taskTitle} is completed`);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+        history.push(routePaths.TASKS)
+    };
+
     return (
         <AppLayoutView>
             {groupOptions ? (
@@ -103,27 +120,29 @@ const TaskView = () => {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={3}>
-                        <FormControl variant="outlined" className={styles.formControl}>
-                            <InputLabel id="demo-simple-select-outlined-label">Status</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={taskStatus}
-                                onChange={e => setTaskStatus(e.target.value)}
-                                label="Group"
-                            >
-                                <MenuItem value="">
-                                    <em>Select status...</em>
-                                </MenuItem>
-                                {statusesOptions.map(option => {
-                                    return (
-                                        <MenuItem key={option.type} value={option.type}>{option.text}</MenuItem>
-                                    )
-                                })}
-                            </Select>
-                        </FormControl>
-                    </Grid>
+                    {id && (
+                        <Grid item xs={3}>
+                            <FormControl variant="outlined" className={styles.formControl}>
+                                <InputLabel id="demo-simple-select-outlined-label">Status</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-outlined-label"
+                                    id="demo-simple-select-outlined"
+                                    value={taskStatus}
+                                    onChange={e => setTaskStatus(e.target.value)}
+                                    label="Group"
+                                >
+                                    <MenuItem value="">
+                                        <em>Select status...</em>
+                                    </MenuItem>
+                                    {statusesOptions.map(option => {
+                                        return (
+                                            <MenuItem key={option.type} value={option.type}>{option.text}</MenuItem>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    )}
                     <Grid item xs={3}>
                         <Button
                             variant="outlined"

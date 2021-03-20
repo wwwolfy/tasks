@@ -104,4 +104,32 @@ export const updateTask = params => {
         .then(response => handleResponse(response));
 };
 
+export const newTaskSendNotification = message => {
+    return fetch(
+        `${config.SLACK_NEW_TASK_API_URL}`,
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            method: 'POST',
+            body: JSON.stringify({text: message}),
+        },
+    )
+        .then(response => handleResponse(response));
+};
+
+export const completedTaskSendNotifications = message => {
+    return fetch(
+        `${config.SLACK_COMPLETED_API_URL}`,
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            method: 'POST',
+            body: JSON.stringify({text: message}),
+        },
+    )
+        .then(response => handleResponse(response));
+}
+
 
