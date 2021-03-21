@@ -9,9 +9,9 @@ import routePaths from '../routePaths';
 
 const statusesOptions = Object.keys(taskStatuses).map(key => {
     return taskStatuses[key];
-})
+});
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(({
     formControl: {
         width: '100%',
         height: '56px',
@@ -27,7 +27,6 @@ const TaskView = () => {
     const [taskStatus, setTaskStatus] = useState('');
     const [groupOptions, setGroupOptions] = useState(null);
     const [isCompleted, setIsCompleted] = useState(false);
-
 
     useEffect(() => {
         getGroups()
@@ -46,7 +45,6 @@ const TaskView = () => {
                 })
                 .catch(error => console.error(error))
         }
-
     }, [id]);
 
     const saveNewTask = async () => {

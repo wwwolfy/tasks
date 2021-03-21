@@ -34,7 +34,7 @@ const TasksView = () => {
         } catch (e) {
             console.error(e);
         }
-    }
+    };
 
     const onUpdate = id => {
         history.push(`/task/${id}`, {id});
@@ -85,14 +85,11 @@ const TasksView = () => {
                     <Typography component="h1" color="primary" variant="h1" align="center">Loading...</Typography>
                 </Box>
             )}
-            {
-                tasks && tasks.length > 0 && (
-                    <CustomRow>
-                        <TasksChart tasksData={tasksChartData}/>
-                    </CustomRow>
-                )
-            }
-
+            {tasks && tasks.length > 0 && (
+                <CustomRow>
+                    <TasksChart tasksData={tasksChartData}/>
+                </CustomRow>
+            )}
         </AppLayoutView>
     )
 };
