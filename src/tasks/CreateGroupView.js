@@ -17,11 +17,15 @@ const CreateGroupView = () => {
     const history = useHistory();
     const styles = useStyles();
     const [name, setName] = useState('');
-    const saveNewGroup = () => {
-        createGroup({name})
-            .then(() => history.push(routePaths.TASKS))
-            .catch(error => console.error(error))
-    }
+    const saveNewGroup = async () => {
+        try {
+            await createGroup({name});
+            history.push(routePaths.TASKS);
+        } catch (e) {
+            console.error(e)
+        }
+    };
+
     return (
         <AppLayoutView>
             <CustomRow>

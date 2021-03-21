@@ -13,20 +13,27 @@ const TasksView = () => {
     const [tasks, setTasks] = useState(null);
 
     useEffect(() => {
-        getTasks()
-            .then(response => setTasks(response))
-            .catch(error => console.error(error));
+        const getAllTasks = async () => {
+            try {
+                const tasks = await getTasks();
+                setTasks(tasks);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+       getAllTasks();
     }, []);
 
-    const onDelete = id => {
-        deleteTask(id)
-            .then(() => {
-                const newTasks = tasks.filter(task => {
-                    return task.id !== id;
-                });
-                setTasks(newTasks);
-            })
-            .catch(error => console.error(error));
+    const onDelete = async (id)=> {
+        try {
+             await deleteTask(id);
+            const newTasks = tasks.filter(task => {
+                return task.id !== id;
+            });
+            setTasks(newTasks);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     const onUpdate = id => {
@@ -47,7 +54,7 @@ const TasksView = () => {
 
     return (
         <AppLayoutView>
-            <h1>Tasks</h1>
+            <Typography variant="h1" color="primary">Tasks</Typography>
             {tasks ? (
                 <Fragment>
                     <CustomRow>

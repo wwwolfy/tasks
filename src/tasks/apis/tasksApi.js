@@ -11,7 +11,7 @@ export const createGroup = params => {
                 'Accept': 'application/json',
             },
             method: 'POST',
-            body: JSON.stringify(params)
+            body: JSON.stringify(params),
         },
     )
         .then(response => handleResponse(response));
@@ -112,7 +112,7 @@ export const newTaskSendNotification = message => {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             method: 'POST',
-            body: JSON.stringify({text: message}),
+            body: `{"text": "${message}"}`,
         },
     )
         .then(response => handleResponse(response));
@@ -126,7 +126,7 @@ export const completedTaskSendNotifications = message => {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             method: 'POST',
-            body: JSON.stringify({text: message}),
+            body:  `{"text": "${message}"}`,
         },
     )
         .then(response => handleResponse(response));

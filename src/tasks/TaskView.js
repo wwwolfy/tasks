@@ -56,12 +56,11 @@ const TaskView = () => {
                 group: taskGroup,
                 status: taskStatuses.NEW.type,
             });
+            history.push(routePaths.TASKS);
             await newTaskSendNotification('New task created');
         } catch (e) {
             console.error(e)
         }
-
-        history.push(routePaths.TASKS);
     };
 
     const onUpdateTask = async (id) => {
